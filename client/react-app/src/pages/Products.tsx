@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import CheckLoginStatus from "../store/RouteAuth";
 
 interface Product {
   id: number;
@@ -29,7 +28,6 @@ const Products: React.FC = () => {
 
   return (
     <section>
-      <CheckLoginStatus />
       <div className="container">
         <h2>Products Table</h2>
         <table id="myTable">

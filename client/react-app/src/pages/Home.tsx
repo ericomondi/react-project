@@ -1,10 +1,8 @@
 import React from "react";
-import CheckLoginStatus from "../store/RouteAuth";
 
 const HomeComponent: React.FC = () => {
   return (
     <>
-    <CheckLoginStatus/>
       <main className="main" id="top">
         <section className="py-0">
           <div
