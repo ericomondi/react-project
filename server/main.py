@@ -41,16 +41,13 @@ def token_required(f):
 @app.route("/products", methods=["POST", "GET"])
 # @token_required
 def prods():
-
-    # print("--------------",current_user)
-
     if request.method == "GET":
         try:
             prods = Product.query.all()
             p_dict = []
             for prod in prods:
                 p_dict.append(
-                    {"id": prod.id, "name": prod.name,"cost": prod.cost, "price": prod.price,'user_id':prod.user_id})
+                    {"id": prod.id, "name": prod.name,"cost": prod.cost, "price": prod.price})
             return jsonify(p_dict)
         except Exception as e:
             print(e)

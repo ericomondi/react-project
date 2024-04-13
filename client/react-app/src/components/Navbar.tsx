@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
                 className="fas fa-map-marker-alt text-warning me-2"
                 data-fa-transform="grow-3"
               ></span>
-              1010 Avenue, New York, NY 10018 US.
+              1010 Avenue, NAIROBI,  10018 KE.
             </div>
             <div className="col-auto ms-md-auto order-md-2 d-none d-sm-flex fs--1 align-items-center">
               <span
@@ -30,7 +30,7 @@ const Navbar: React.FC = () => {
                 className="ms-2 fs--1 d-inline text-white fw-bold"
                 href="tel:2123865575"
               >
-                212 386 5575, 212 386 5576
+                254 386 5575, 254 386 5576
               </a>
             </div>
           </div>

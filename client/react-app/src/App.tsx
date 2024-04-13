@@ -8,16 +8,16 @@ import Register from "./pages/Register";
 import Products from "./pages/Products";
 import Logout from "./components/Logout";
 import PrivateRoutes from "./store/PrivateRoute";
-import { GoogleLogin } from "@react-oauth/google";
-import UseGoogleLogin from "./components/GoogleLogin";
+import NotFound from "./pages/NotFound";
 
 function App(): JSX.Element {
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<UseGoogleLogin />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<Register />} />
+        <Route path="*" element={<NotFound/>}/>
         <Route element={<Layout />}>
           <Route element={<PrivateRoutes />}>
             <Route path="/" element={<HomeComponent />} />

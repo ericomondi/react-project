@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  googleLogout,
-  useGoogleLogin,
-  CodeResponse,
-} from "@react-oauth/google";
+import { useGoogleLogin, CodeResponse } from "@react-oauth/google";
 import axios from "axios";
 import { GoogleLoginButton } from "react-social-login-buttons";
 import { useNavigate } from "react-router-dom";
@@ -61,26 +57,7 @@ const UseGoogleLogin: React.FC = () => {
 
   return (
     <div>
-      <h2>React Google Login</h2>
-      <br />
-      <br />
-      {profile ? (
-        <div>
-          {profile.picture ? (
-            <img src={profile.picture} alt="user image" />
-          ) : (
-            <div>No profile picture available</div>
-          )}
-          <h3>User Logged in</h3>
-          <p>Name: {profile.name}</p>
-          <p>Email Address: {profile.email}</p>
-          <br />
-          <br />
-          <button onClick={logOut}>Log out</button>
-        </div>
-      ) : (
-        <GoogleLoginButton onClick={login} />
-      )}
+      <GoogleLoginButton onClick={login} />
     </div>
   );
 };

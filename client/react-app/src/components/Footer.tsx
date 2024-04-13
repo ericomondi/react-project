@@ -148,7 +148,7 @@ const Footer: React.FC = () => {
             </div>
             <div className="col-sm-6 mt-3 mt-sm-0">
               <p className="lh-lg mb-0 fw-semi-bold">
-                &copy; Copyright 2021 Elixir Inc.
+                &copy; Copyright 2021 ERIC Inc.
               </p>
             </div>
             <div className="col text-sm-end mt-3 mt-sm-0">
@@ -158,7 +158,7 @@ const Footer: React.FC = () => {
                 href="https://themewagon.com/"
                 target="_blank"
               >
-                Themewagon
+                BIT
               </a>
             </div>
           </div>

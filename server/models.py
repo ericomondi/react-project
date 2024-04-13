@@ -5,7 +5,7 @@ from flask import Flask
 
 app = Flask(__name__)
 app.secret_key = 'secretkey'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:2345@localhost/react-project'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:2345@localhost/react-app'
 app.config['SQLALCHEMY_TRACK_CONFIGURATION'] = False
 db = SQLAlchemy(app)
 
@@ -19,9 +19,7 @@ class Product(db.Model):
     price = db.Column(db.Float, nullable=False)
     created_at = db.Column(
         db.DateTime, default=datetime.utcnow, nullable=False)
-    user_id=db.Column(db.Integer,db.ForeignKey('users.id'),nullable=False)
-    user=db.relationship("User", backref="products")
-    sales = db.relationship("Sale", backref='product')
+    # sales = db.relationship("Sale", backref='product')
 
 
 class Sale(db.Model):
@@ -39,7 +37,8 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, unique=True, nullable=False)
+    username = db.Column(db.String)
+    email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
 
     def __repr__(self):

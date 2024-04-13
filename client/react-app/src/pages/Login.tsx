@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import UseGoogleLogin from "../components/GoogleLogin";
 
 interface AuthType {
   username: string;
@@ -59,7 +60,7 @@ const Login: React.FC = () => {
               >
                 <div className="mb-5" data-zanim-xs='{"delay":0,"duration":1}'>
                   <a href="../index.html">
-                    <img src="../assets/img/logo-light.png" alt="logo" />
+                    <img src="src/assets/images/logo-light.png" alt="logo" />
                   </a>
                 </div>
                 <div
@@ -126,6 +127,7 @@ const Login: React.FC = () => {
                       </div>
                     </form>
                   </div>
+                  <UseGoogleLogin />
                 </div>
               </div>
             </div>
