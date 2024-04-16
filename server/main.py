@@ -229,32 +229,32 @@ def dashboard():
 @app.route('/register', methods=['POST'])
 def register():
     data = request.json
-    username = data['username']
+    email = data['email']
 
     # Check if the username does not exist
-    if not User.query.filter_by(username=username).first():
-        new_user = User(username=username, password=data['password'])
+    if not User.query.filter_by(email=email).first():
+        new_user = User(username=data['fullname'], email=data['email'], password=data['password'])
         db.session.add(new_user)
         db.session.commit()
         r = f"successfully stored userid: {str(new_user.id)}"
         res = {"result": r}
         return jsonify(res), 201
     else:
-        return jsonify({'error': f'Username {username} already exists'}), 400
+        return jsonify({'error': f'email {data['email']} already exists'}), 400
 
 
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
-    username = data['username']
     password = data['password']
+    email = data['email']
 
     # Query the database for the user
-    user = User.query.filter_by(username=username, password=password).first()
+    user = User.query.filter_by(email=email, password=password).first()
 
     if user:
 
-        token = jwt.encode({'username': username, 'exp': datetime.datetime.utcnow()
+        token = jwt.encode({'email': email, 'exp': datetime.datetime.utcnow()
                             + datetime.timedelta(minutes=10)}, app.config['SECRET_KEY'])
         return jsonify({'access_token': token}), 200
     else:
