@@ -97,6 +97,11 @@ const Navbar: React.FC = () => {
                         Products
                       </Link>
                     </li>
+                    <li>
+                      <Link className="dropdown-item" to="/dashboard">
+                        Dashboard
+                      </Link>
+                    </li>
                     
                     <li>
                       <Link className="dropdown-item" to="/login">

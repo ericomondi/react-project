@@ -39,7 +39,7 @@ const Login: React.FC = () => {
       localStorage.setItem("isLoggedIn", true.toString()); //  login status to local storage
 
       setIsLoggedIn(true);
-      navigate("/");
+      navigate("/dashboard");
     } catch (error) {
       console.error(error);
     }

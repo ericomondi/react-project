@@ -9,6 +9,7 @@ import Products from "./pages/Products";
 import Logout from "./components/Logout";
 import PrivateRoutes from "./store/PrivateRoute";
 import NotFound from "./pages/NotFound";
+import Dashboard from "./pages/Dashboard";
 
 function App(): JSX.Element {
   return (
@@ -17,7 +18,8 @@ function App(): JSX.Element {
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<Register />} />
-        <Route path="*" element={<NotFound/>}/>
+        <Route path="*" element={<NotFound />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route element={<Layout />}>
           <Route element={<PrivateRoutes />}>
             <Route path="/" element={<HomeComponent />} />

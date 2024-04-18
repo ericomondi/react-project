@@ -30,7 +30,7 @@ const UseGoogleLogin: React.FC = () => {
       setUser(codeResponse);
       localStorage.setItem("isLoggedIn", "true"); // Set isLoggedIn to true in local storage
       setIsLoggedIn(true); // Update isLoggedIn state to true
-      navigate("/"); // Redirect to homepage on successful sign-in
+      navigate("/dashboard"); // Redirect to homepage on successful sign-in
     },
     onError: (error: any) => console.log("Login Failed:", error),
   });
