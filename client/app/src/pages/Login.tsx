@@ -8,9 +8,14 @@ interface AuthType {
   email: string;
   password: string;
 }
+
+
 interface ResponseData {
   access_token: string;
 }
+
+
+
 
 const Login: React.FC = () => {
   const navigate = useNavigate();

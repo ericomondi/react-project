@@ -1,8 +1,6 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
-
-
 app = Flask(__name__)
 app.secret_key = 'secretkey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:2345@localhost/react-app'

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DataTable from "react-data-table-component";
+import "bootstrap/dist/css/bootstrap.css";
+import { Link } from "react-router-dom";
+import RedirectButton from "../components/RedirectButton";
 
 interface Product {
   id: number;
@@ -9,11 +12,11 @@ interface Product {
 }
 
 const Products: React.FC = () => {
+  const [originalArray, setOriginalArray] = useState<Product[]>([]);
   const [array, setArray] = useState<Product[]>([]);
-  
 
   function handleFilter(event: any) {
-    const newData = array.filter((row) => {
+    const newData = originalArray.filter((row) => {
       return row.name.toLowerCase().includes(event.target.value.toLowerCase());
     });
 
@@ -26,7 +29,8 @@ const Products: React.FC = () => {
         "http://127.0.0.1:5000/products"
       );
       console.log(response.data);
-      setArray(response.data);
+      setOriginalArray(response.data);
+      setArray(response.data); // Initialize the filtered list with the full list
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -56,9 +60,16 @@ const Products: React.FC = () => {
 
   return (
     <section>
+      <RedirectButton to="add-product">Add Product</RedirectButton>
+
       <div className="container">
         <div className="text-end">
-          <input type="text" onChange={handleFilter} />
+          <input
+            type="text"
+            onChange={handleFilter}
+            placeholder="Filter by name"
+          />
+          <button onClick={() => setArray(originalArray)}>Reset Filter</button>
         </div>
         <DataTable
           title="Products"
@@ -66,9 +77,7 @@ const Products: React.FC = () => {
           data={array}
           selectableRows
           pagination
-        >
-          {" "}
-        </DataTable>
+        />
       </div>
     </section>
   );

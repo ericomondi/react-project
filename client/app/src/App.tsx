@@ -10,6 +10,8 @@ import Logout from "./components/Logout";
 import PrivateRoutes from "./store/PrivateRoute";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
+import AddProduct from "./components/AddProduct";
+import LineChart from "./components/LineChart";
 
 function App(): JSX.Element {
   return (
@@ -22,7 +24,9 @@ function App(): JSX.Element {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route element={<Layout />}>
           <Route element={<PrivateRoutes />}>
+            <Route path="/products/add-product" element={<AddProduct/>}></Route>
             <Route path="/" element={<HomeComponent />} />
+            <Route path="/board" element={< LineChart/>} />
             <Route path="/products" element={<Products />} />
           </Route>
         </Route>

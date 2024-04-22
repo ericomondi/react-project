@@ -51,20 +51,14 @@ def prods():
             return jsonify(p_dict)
         except Exception as e:
             print(e)
-            # capture_exception(e)
             return jsonify({})
 
     elif request.method == "POST":
         if request.is_json:
             try:
                 data = request.json
-                username="Eric"
-                user=User.query.filter_by(username=username).first()
-                if user:
-                    user_id = user.id
-
                 new_product = Product(
-                    name=data['name'], cost=data['cost'], price=data['price'], user_id=user_id)
+                    name=data['name'], cost=data['cost'], price=data['price'])
                 db.session.add(new_product)
                 db.session.commit()
                 r = "Product added successfully. ID: " + str(new_product.id)
@@ -72,7 +66,6 @@ def prods():
                 return jsonify(res), 201
             except Exception as e:
                 print(e)
-                # capture_exception(e)
                 return jsonify({"error": "Internal Server Error"}), 500
         else:
             return jsonify({"error": "Data is not JSON."}), 400

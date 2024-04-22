@@ -4,44 +4,11 @@ import "../styles/layout/style.css";
 import "../styles/layout/bootstrap.min.css";
 import "../styles/layout/owl.carousel.min.css";
 import "../styles/layout/tempusdominus.min.css";
+import LineChart from "../components/LineChart";
+import BarChart from "../components/BarChart";
 
 const Dashboard: React.FC = () => {
-  useEffect(() => {
-    // Define an array of script URLs
-    const scriptUrls = [
-      "./src/scripts/layout/waypoints.min.js",
 
-      "./src/scripts/layout/bootstrap.bundle.min.js",
-      "./src/scripts/layout/chart.js",
-      "./src/scripts/layout/easing.min.js",
-      "./src/scripts/layout/jquery-3.4.1.min.js",
-      "./src/scripts/layout/moment-timezone.min.js",
-      
-      "./src/scripts/layout/owl.carousel.min.js",
-      "./src/scripts/layout/tempusdominus-bootstrap-4.min.js",
-      "./src/scripts/layout/moment.min.js",
-      "./src/scripts/layout/main.js",
-
-    ];
-
-    // Load each script dynamically
-    scriptUrls.forEach((url) => {
-      const script = document.createElement("script");
-      script.src = url;
-      script.async = true;
-      document.body.appendChild(script);
-    });
-
-    // Clean up function to remove the scripts when the component unmounts
-    return () => {
-      scriptUrls.forEach((url) => {
-        const script = document.querySelector(`script[src="${url}"]`);
-        if (script) {
-          document.body.removeChild(script);
-        }
-      });
-    };
-  }, []);
   return (
     <>
       <div className="container-xxl position-relative bg-white d-flex p-0">
@@ -330,17 +297,20 @@ const Dashboard: React.FC = () => {
                   <div className="d-flex align-items-center justify-content-between mb-4">
                     <h6 className="mb-0">Worldwide Sales</h6>
                     <a href="">Show All</a>
+                    
                   </div>
-                  <canvas id="worldwide-sales"></canvas>
+                  {/* <canvas id="worldwide-sales"></canvas> */}
+                  <LineChart/>
                 </div>
               </div>
               <div className="col-sm-12 col-xl-6">
                 <div className="bg-light text-center rounded p-4">
                   <div className="d-flex align-items-center justify-content-between mb-4">
-                    <h6 className="mb-0">Salse & Revenue</h6>
+                    <h6 className="mb-0">Recent Products</h6>
                     <a href="">Show All</a>
                   </div>
-                  <canvas id="salse-revenue"></canvas>
+                  {/* <canvas id="salse-revenue"></canvas> */}
+                  <BarChart/>
                 </div>
               </div>
             </div>
