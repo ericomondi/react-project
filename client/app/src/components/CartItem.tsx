@@ -1,17 +1,42 @@
-import { Button, Stack } from "react-bootstrap"
-import { useShoppingCart } from "../context/ShoppingCartContext"
-import storeItems from "../store/items.json"
-import { formatCurrency } from "../utilities/formatCurrency"
+import { Button, Stack } from "react-bootstrap";
+import { useShoppingCart } from "../context/ShoppingCartContext";
+// import storeItems from "../store/items.json";
+import { formatCurrency } from "../utilities/formatCurrency";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 type CartItemProps = {
-  id: number
-  quantity: number
+  id: number;
+  quantity: number;
+};
+interface Product {
+  id: number;
+  name: string;
+  price: number;
 }
 
 export function CartItem({ id, quantity }: CartItemProps) {
-  const { removeFromCart } = useShoppingCart()
-  const item = storeItems.find(i => i.id === id)
-  if (item == null) return null
+  const { removeFromCart } = useShoppingCart();
+  const [array, setArray] = useState<Product[]>([]);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get<Product[]>(
+        "http://127.0.0.1:5000/products"
+      );
+      console.log(response.data);
+      setArray(response.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const item = array.find((i) => i.id === id);
+  if (item == null) return null;
 
   return (
     <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
@@ -41,5 +66,5 @@ export function CartItem({ id, quantity }: CartItemProps) {
         &times;
       </Button>
     </Stack>
-  )
+  );
 }

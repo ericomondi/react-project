@@ -9,6 +9,7 @@ const Logout = () => {
         // Clearing the local storage
         localStorage.removeItem('token');
         localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('shopping-cart')
 
         // Navigating to the login page after clearing the local storage
         navigate("/login");

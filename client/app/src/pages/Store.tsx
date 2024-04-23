@@ -1,9 +1,8 @@
-import { Col, Row } from "react-bootstrap"
-import { StoreItem } from "../components/StoreItem"
-import storeItems from "../store/items.json"
-import React, { useEffect, useState } from "react"
-import axios from "axios"
-
+import { Col, Row } from "react-bootstrap";
+import { StoreItem } from "../components/StoreItem";
+// import storeItems from "../store/items.json"
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 interface Product {
   id: number;
@@ -14,7 +13,6 @@ interface Product {
 export function Store() {
   const [array, setArray] = useState<Product[]>([]);
 
-  
   const fetchProducts = async () => {
     try {
       const response = await axios.get<Product[]>(
@@ -32,15 +30,17 @@ export function Store() {
   }, []);
 
   return (
-    <>
-      <h1>Store</h1>
-      <Row md={3} xs={2} lg={5} className="g-3">
-        {storeItems.map(item => (
-          <Col key={item.id}>
-            <StoreItem {...item} />
-          </Col>
-        ))}
-      </Row>
-    </>
-  )
+    <section>
+      <div className="container">
+        <h1>Store</h1>
+        <Row md={3} xs={2} lg={4} className="g-3">
+          {array.map((item) => (
+            <Col key={item.id}>
+              <StoreItem {...item} />
+            </Col>
+          ))}
+        </Row>
+      </div>
+    </section>
+  );
 }
