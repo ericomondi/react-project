@@ -1,0 +1,70 @@
+[
+    {
+      "id": 1,
+      "name": "Book",
+      "price": 10.99,
+      "imgUrl": "/imgs/book.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Computer",
+      "price": 1199,
+      "imgUrl": "/imgs/computer.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Banana",
+      "price": 1.05,
+      "imgUrl": "/imgs/banana.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Car",
+      "price": 14000,
+      "imgUrl": "/imgs/car.jpg"
+    },
+    {
+      "id": 123,
+      "name": "orange",
+      "price": "2",
+      "imgUrl": "https://cdn.pixabay.com/photo/2017/02/06/19/25/mandarins-2043983_960_720.jpg"
+    },
+    {
+      "id": 124,
+      "name": "Milk",
+      "price": "5",
+      "imgUrl": "https://cdn.pixabay.com/photo/2017/07/05/15/41/milk-2474993_1280.jpg"
+    },
+    {
+      "id": 125,
+      "name": "Ice Cream",
+      "price": "3",
+      "imgUrl": "https://cdn.pixabay.com/photo/2016/03/23/15/00/ice-cream-1274894_1280.jpg"
+    },
+    {
+      "id": 126,
+      "name": "Salmon",
+      "price": "3.5",
+      "imgUrl": "https://cdn.pixabay.com/photo/2014/11/05/15/57/salmon-518032_1280.jpg"
+    },
+
+    {
+      "id": 127,
+      "name": "Watermelon",
+      "price": "2.4",
+      "imgUrl": "https://cdn.pixabay.com/photo/2016/09/07/17/01/water-melon-1652093_1280.jpg"
+    },
+
+    {
+      "id": 128,
+      "name": "Potatoe",
+      "price": "4.4",
+      "imgUrl": "https://cdn.pixabay.com/photo/2016/08/11/08/43/potatoes-1585060_1280.jpg "
+    }
+  
+  ]
+  
+  
+    
+  
+  

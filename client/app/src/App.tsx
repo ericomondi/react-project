@@ -11,10 +11,14 @@ import PrivateRoutes from "./store/PrivateRoute";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import AddProduct from "./components/AddProduct";
-import LineChart from "./components/LineChart";
+import { Store } from "./pages/Store";
+import { ShoppingCartProvider } from "./context/ShoppingCartContext";
+import ClearCart from "./pages/ClearCart";
+
 
 function App(): JSX.Element {
   return (
+    <ShoppingCartProvider>
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -26,12 +30,14 @@ function App(): JSX.Element {
           <Route element={<PrivateRoutes />}>
             <Route path="/products/add-product" element={<AddProduct/>}></Route>
             <Route path="/" element={<HomeComponent />} />
-            <Route path="/board" element={< LineChart/>} />
+            <Route path="/store" element={< Store/>} />
             <Route path="/products" element={<Products />} />
+            <Route path="/clear-cart" element={<ClearCart />} />
           </Route>
         </Route>
       </Routes>
     </Router>
+    </ShoppingCartProvider>
   );
 }
 
