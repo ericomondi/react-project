@@ -3,12 +3,15 @@ import { useGoogleLogin, CodeResponse } from "@react-oauth/google";
 import axios from "axios";
 import { GoogleLoginButton } from "react-social-login-buttons";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 interface Profile {
   picture?: string;
   name?: string;
   email?: string;
 }
+
 
 const UseGoogleLogin: React.FC = () => {
   const [user, setUser] = useState<CodeResponse | null>(null);
@@ -20,6 +23,8 @@ const UseGoogleLogin: React.FC = () => {
     const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
     if (storedIsLoggedIn === "true") {
       navigate("/");
+      toast.success("Welcome back")
+
     }
   }, []);
 
@@ -30,7 +35,8 @@ const UseGoogleLogin: React.FC = () => {
       setUser(codeResponse);
       localStorage.setItem("isLoggedIn", "true"); // Set isLoggedIn to true in local storage
       setIsLoggedIn(true); // Update isLoggedIn state to true
-      navigate("/dashboard"); // Redirect to homepage on successful sign-in
+      navigate("/"); // Redirect to homepage on successful sign-in
+      toast.success("Login successfull")
     },
     onError: (error: any) => console.log("Login Failed:", error),
   });

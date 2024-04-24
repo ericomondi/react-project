@@ -3,19 +3,17 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import UseGoogleLogin from "../components/GoogleLogin";
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface AuthType {
   email: string;
   password: string;
 }
 
-
 interface ResponseData {
   access_token: string;
 }
-
-
-
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -44,14 +42,17 @@ const Login: React.FC = () => {
       localStorage.setItem("isLoggedIn", true.toString()); //  login status to local storage
 
       setIsLoggedIn(true);
-      navigate("/dashboard");
+      navigate("/");
+      toast.success("Login successfull");
     } catch (error) {
+      toast.error("An error occured logging in! try again");
       console.error(error);
     }
   };
   return (
     <>
       <main className="main" id="top">
+        <ToastContainer />
         <section className="text-center py-0">
           <div
             className="bg-holder overlay overlay-2"

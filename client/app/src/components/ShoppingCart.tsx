@@ -4,7 +4,8 @@ import { useShoppingCart } from "../context/ShoppingCartContext";
 import { formatCurrency } from "../utilities/formatCurrency";
 import { CartItem } from "./CartItem";
 import axios from "axios";
-import storeItems from "../store/items.json";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type ShoppingCartProps = {
   isOpen: boolean;
@@ -17,7 +18,7 @@ interface Product {
 }
 
 export function ShoppingCart({ isOpen }: ShoppingCartProps) {
-  const { closeCart, cartItems } = useShoppingCart();
+  const { closeCart,  cartItems, clearCart, } = useShoppingCart();
   const [array, setArray] = useState<Product[]>([]);
 
   const fetchProducts = async () => {
@@ -35,6 +36,24 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  const clearCartAndSubmit = async () => {
+    // Submit cart to the database
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/create_order", {
+        cartItems,
+      });
+      localStorage.removeItem("shopping-cart");
+      clearCart()
+      closeCart()
+      console.log("Cart submitted successfully:", response.data);
+      toast.success("Order inserted successfully")
+    } catch (error) {
+      toast.error("An error occured")
+      console.error("Error submitting cart:", error);
+    }
+  };
+
 
   return (
     <Offcanvas show={isOpen} onHide={closeCart} placement="end">
@@ -55,6 +74,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
               }, 0)
             )}
           </div>
+          <button className="btn btn-primary" onClick={clearCartAndSubmit}>Check Out</button>
         </Stack>
       </Offcanvas.Body>
     </Offcanvas>

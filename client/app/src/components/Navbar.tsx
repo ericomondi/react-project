@@ -178,14 +178,9 @@ const Navbar: React.FC = () => {
                   </Link>
                 </li>
               </ul>
-              <a
-                className="btn btn-outline-primary rounded-pill btn-sm border-2 d-block d-lg-inline-block ms-auto my-3 my-lg-0"
-                href="https://themewagon.com/themes/elixir/"
-                target="_blank"
-              >
-                Purchase
-              </a>
+              
             </div>
+            
             {cartQuantity > 0 && (
               <Button
                 onClick={openCart}

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import UseGoogleLogin from "../components/GoogleLogin";
-import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface FormType {
   name: string;
@@ -33,8 +32,10 @@ const AddProduct: React.FC = () => {
           "Content-Type": "application/json",
         },
       });
+      toast.success("Product added successfully!");
       console.log("Done.", response.data);
     } catch (error) {
+      toast.error("An error occurred while adding the product.");
       console.error(error);
     }
   };

@@ -3,13 +3,14 @@ from flask import jsonify
 # import sentry_sdk
 from flask import jsonify, request
 # from sentry_sdk import capture_exception
-from models import Product, app, db, Sale, User
+from models import Products, app, db, Orders, OrderDetails, User
 from flask_cors import CORS
 import jwt
 from flask_jwt_extended import unset_jwt_cookies, jwt_required
 from sqlalchemy import func,desc
 from functools import wraps
 import datetime
+from sqlalchemy.exc import IntegrityError
 
 
 
@@ -43,11 +44,11 @@ def token_required(f):
 def prods():
     if request.method == "GET":
         try:
-            prods = Product.query.all()
+            prods = Products.query.all()
             p_dict = []
             for prod in prods:
                 p_dict.append(
-                    {"id": prod.id, "name": prod.name,"cost": prod.cost, "price": prod.price})
+                    {"id": prod.product_id, "name": prod.name,"cost": prod.cost, "price": prod.price})
             return jsonify(p_dict)
         except Exception as e:
             print(e)
@@ -57,165 +58,24 @@ def prods():
         if request.is_json:
             try:
                 data = request.json
-                new_product = Product(
+                new_product = Products(
                     name=data['name'], cost=data['cost'], price=data['price'])
                 db.session.add(new_product)
                 db.session.commit()
-                r = "Product added successfully. ID: " + str(new_product.id)
+                r = "Product added successfully. ID: " + str(new_product.product_id)
                 res = {"result": r}
                 return jsonify(res), 201
+            except IntegrityError as e:
+                db.session.rollback()
+                print(f"IntegrityError: {e.orig}")
+                r = f"IntegrityError: {e.orig}"
+                return jsonify({"error": r}), 400
             except Exception as e:
+                db.session.rollback()
                 print(e)
                 return jsonify({"error": "Internal Server Error"}), 500
         else:
             return jsonify({"error": "Data is not JSON."}), 400
-
-
-
-
-@app.route('/get-product<int:product_id>', methods=['GET'])
-def get_product(product_id):
-    try:
-        prd = Product.query.get(product_id)
-        if prd:
-            return jsonify({
-                "id": prd.id,
-                "name": prd.name,
-                "cost": prd.cost,
-                "price": prd.price
-            })
-        else:
-            return jsonify({"error": "Product not found."}), 404
-    except Exception as e:
-        print(e)
-        # capture_exception(e)
-        return jsonify({"error": "Internal Server Error"}), 500
-
-
-@app.route('/sales', methods=['GET', 'POST'])
-# @token_required
-def sales():
-    if request.method == 'GET':
-        try:
-            sales = Sale.query.all()
-            s_dict = []
-            for sale in sales:
-                s_dict.append({"id": sale.id, "pid": sale.pid,
-                              "quantity": sale.quantity, "created_at": sale.created_at})
-            return jsonify(s_dict)
-        except Exception as e:
-            print(e)
-            # capture_exception(e)
-            return jsonify({})
-
-    elif request.method == 'POST':
-        if request.is_json:
-            try:
-                data = request.json
-                new_sale = Sale(pid=data.get(
-                    'pid'), quantity=data.get('quantity'))
-                db.session.add(new_sale)
-                db.session.commit()
-                s = "sales added successfully." + str(new_sale.id)
-                sel = {"result": s}
-                return jsonify(sel), 201
-            except Exception as e:
-                print(e)
-                # capture_exception(e)
-                return jsonify({"error": "Internal Server Error"}), 500
-        else:
-            return jsonify({"error": "Data is not JSON."}), 400
-    else:
-        return jsonify({"error": "Method not allowed."}), 400
-
-
-@app.route('/dashboard', methods=["GET"])
-# @token_required
-def dashboard():
-    # Query to get sales per day
-    sales_per_day = db.session.query(
-        func.date(Sale.created_at).label('date'),
-        func.sum(Sale.quantity * Product.price).label('total_sales')
-    ).join(Product).group_by(
-        func.date(Sale.created_at)
-    ).all()
-
-    # Convert sales data to JSON format
-    sales_data = [{'date': str(day), 'total_sales': sales}
-                  for day, sales in sales_per_day]
-
-    # Query to get sales per product
-    sales_per_product = db.session.query(
-        Product.name,
-        func.sum(Sale.quantity * Product.price).label('sales_product')
-    ).join(Sale).group_by(
-        Product.name
-    ).all()
-
-    # Convert sales per product data to JSON format
-    salesproduct_data = [{'name': name, 'sales_product': sales_product}
-                         for name, sales_product in sales_per_product]
-
-    # Query to get profit per day
-    profit_per_day = db.session.query(
-        func.date(Sale.created_at).label('date'),
-        func.sum((Sale.quantity * Product.price) -
-                 (Sale.quantity * Product.cost)).label('total_profit')
-    ).join(Product).group_by(
-        func.date(Sale.created_at)
-    ).all()
-
-    # Convert profit per day data to JSON format
-    profit_per_day_data = [{'date': str(day), 'total_profit': profit}
-                           for day, profit in profit_per_day]
-
-    # Query to get profit per product
-    profit_per_product = db.session.query(
-        Product.name,
-        func.sum((Sale.quantity * Product.price) -
-                 (Sale.quantity * Product.cost)).label('profit_product')
-    ).join(Sale).group_by(
-        Product.name
-    ).all()
-
-    # Convert profit per product data to JSON format
-    profit_per_product_data = [{'name': name, 'profit_product': profit}
-                               for name, profit in profit_per_product]
-
-    # Query to get recent sales (last 10)
-    recent_sales = db.session.query(Sale, Product).\
-        join(Product).\
-        order_by(Sale.created_at.desc()).\
-        limit(10).\
-        all()
-
-    # Convert recent sales data to JSON format
-    recent_sales_data = [{'id': sale.id, 'name': product.name, 'price': product.price}
-                         for sale, product in recent_sales]
-    
-    
-    # Query to get recent products (last 10)
-    recent_products = db.session.query(Product).\
-        order_by(Product.created_at.desc()).\
-        limit(10).\
-        all()
-
-    # Convert recent products data to JSON format
-    recent_products_data = [{'id': product.id, 'name': product.name, 'price': product.price}
-                            for product in recent_products]
-    # print(recent_products_data)
-    # print(recent_sales)
-    # Constructing dashboard data
-    dashboard_data = {
-        'sales_data': sales_data,
-        'salesproduct_data': salesproduct_data,
-        'profit_per_day': profit_per_day_data,
-        'profit_per_product': profit_per_product_data,
-        'recent_sales': recent_sales_data,
-        'recent_products': recent_products_data
-    }
-
-    return jsonify(dashboard_data)
 
 
 
@@ -254,11 +114,51 @@ def login():
         return jsonify({'error': 'User does not exist'}), 404
 
 
-@app.route('/logout',methods=['POST'])
-def logout():
-    response=jsonify({'message':'Successfully logged out'})
-    unset_jwt_cookies(response)
-    return response
+@app.route('/create_order', methods=['POST'])
+def create_order():
+    # Step 1: Parse the JSON object
+    order_items = request.json
+    list_of_items = order_items["cartItems"]
+
+    print("list_of_items......", list_of_items)
+
+    # Step 2: Create an Order
+    new_order = Orders()
+    db.session.add(new_order)
+    db.session.commit() # Commit to get the order_id
+
+    total_cost = 0
+
+    # Step 3: Create Order Details and Calculate Total
+    for item in list_of_items:
+        print("Item----", item)
+        product = Products.query.get(item['id'])
+        if product:
+            order_detail = OrderDetails(
+                order_id=new_order.order_id,
+                product_id=product.product_id,
+                quantity=item['quantity'],
+                total_price=product.price * item['quantity']
+            )
+            total_cost += order_detail.total_price
+            db.session.add(order_detail)
+
+    # Step 4: Update Order Total
+    new_order.total = total_cost
+
+    # Step 5: Commit Changes
+    db.session.commit()
+
+    return jsonify({"message": "Order created successfully", "order_id": new_order.order_id}), 201
+
+ 
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     with app.app_context():
