@@ -7,7 +7,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface AuthType {
-  email: string;
+  username: string;
+  // email: string;
   password: string;
 }
 
@@ -18,18 +19,20 @@ interface ResponseData {
 const Login: React.FC = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
+  const [username, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     let formContent: AuthType = {
-      email: email,
+      username: username,
       password: password,
     };
     try {
-      const apiUrl = "http://127.0.0.1:5000/login";
+      // const apiUrl = "http://127.0.0.1:5000/login";
+      const apiUrl = "http://127.0.0.1:8000/auth/token";
       const response = await axios.post(apiUrl, formContent, {
         headers: {
           "Content-Type": "application/json",
@@ -85,10 +88,10 @@ const Login: React.FC = () => {
                             </div>
                             <input
                               className="form-control"
-                              type="email"
-                              placeholder="Email"
+                              // type="email"
+                              placeholder="Email or username"
                               aria-label="Text input with dropdown button"
-                              value={email}
+                              value={username}
                               onChange={(e) => setEmail(e.target.value)}
                             />
                           </div>

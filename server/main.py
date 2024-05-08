@@ -116,20 +116,17 @@ def login():
 
 @app.route('/create_order', methods=['POST'])
 def create_order():
-    # Step 1: Parse the JSON object
     order_items = request.json
     list_of_items = order_items["cartItems"]
 
     print("list_of_items......", list_of_items)
 
-    # Step 2: Create an Order
     new_order = Orders()
     db.session.add(new_order)
-    db.session.commit() # Commit to get the order_id
+    db.session.commit() 
 
     total_cost = 0
 
-    # Step 3: Create Order Details and Calculate Total
     for item in list_of_items:
         print("Item----", item)
         product = Products.query.get(item['id'])
@@ -143,20 +140,11 @@ def create_order():
             total_cost += order_detail.total_price
             db.session.add(order_detail)
 
-    # Step 4: Update Order Total
     new_order.total = total_cost
 
-    # Step 5: Commit Changes
     db.session.commit()
 
     return jsonify({"message": "Order created successfully", "order_id": new_order.order_id}), 201
-
- 
-
-
-
-
-
 
 
 
