@@ -5,6 +5,7 @@ import { formatCurrency } from "../utilities/formatCurrency";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
+
 type CartItemProps = {
   id: number;
   quantity: number;
@@ -13,6 +14,8 @@ interface Product {
   id: number;
   name: string;
   price: number;
+  img_url: string;
+  stock_quantity: number;
 }
 
 export function CartItem({ id, quantity }: CartItemProps) {
@@ -21,8 +24,14 @@ export function CartItem({ id, quantity }: CartItemProps) {
 
   const fetchProducts = async () => {
     try {
+      const token = localStorage.getItem("token")
       const response = await axios.get<Product[]>(
-        "http://127.0.0.1:5000/products"
+        "http://127.0.0.1:8000/products", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       setArray(response.data);
@@ -38,12 +47,14 @@ export function CartItem({ id, quantity }: CartItemProps) {
   const item = array.find((i) => i.id === id);
   if (item == null) return null;
 
+
   return (
     <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
-      {/* <img
-        src={item.imgUrl}
+      <img
+        src={item.img_url}
         style={{ width: "125px", height: "75px", objectFit: "cover" }}
-      /> */}
+        alt="image"
+      />
       <div className="me-auto">
         <div>
           {item.name}{" "}

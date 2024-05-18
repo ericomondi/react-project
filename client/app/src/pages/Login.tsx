@@ -32,7 +32,7 @@ const Login: React.FC = () => {
     };
     try {
       // const apiUrl = "http://127.0.0.1:5000/login";
-      const apiUrl = "http://127.0.0.1:8000/auth/token";
+      const apiUrl = "http://127.0.0.1:8000/auth/login";
       const response = await axios.post(apiUrl, formContent, {
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +43,6 @@ const Login: React.FC = () => {
       console.log("test", responseData);
       localStorage.setItem("token", responseData.access_token);
       localStorage.setItem("isLoggedIn", true.toString()); //  login status to local storage
-
       setIsLoggedIn(true);
       navigate("/");
       toast.success("Login successfull");
@@ -145,7 +144,7 @@ const Login: React.FC = () => {
                       </div>
                     </form>
                   </div>
-                  <UseGoogleLogin />
+                  {/* <UseGoogleLogin /> */}
                 </div>
               </div>
             </div>

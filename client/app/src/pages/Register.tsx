@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+
+
+
 
 interface AuthType {
-  fullname: string;
-  email: string;
+  username: string;
+  // email: string;
   password: string;
 }
 interface ResponseData {
@@ -13,19 +17,20 @@ interface ResponseData {
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
-  const [fullName, setFullName] = useState("");
+  const [userName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     let formContent: AuthType = {
-      fullname: fullName,
-      email: email,
+      username: userName,
+      // email: email,
       password: password,
     };
     try {
-      const apiUrl = "http://127.0.0.1:5000/register";
+      // const apiUrl = "http://127.0.0.1:5000/register";
+      const apiUrl = "http://127.0.0.1:8000/auth/register";
       const response = await axios.post(apiUrl, formContent, {
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +85,7 @@ const Register: React.FC = () => {
                             type="text"
                             placeholder="Full Name"
                             aria-label="Full Name"
-                            value={fullName}
+                            value={userName}
                             onChange={(e) => setFullName(e.target.value)}
                           />
                         </div>

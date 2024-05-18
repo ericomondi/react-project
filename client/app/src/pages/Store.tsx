@@ -15,8 +15,15 @@ export function Store() {
 
   const fetchProducts = async () => {
     try {
+      const token = localStorage.getItem("token")
       const response = await axios.get<Product[]>(
-        "http://127.0.0.1:5000/products"
+        "http://127.0.0.1:8000/products",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       setArray(response.data);

@@ -23,8 +23,6 @@ const UseGoogleLogin: React.FC = () => {
     const storedIsLoggedIn = localStorage.getItem("isLoggedIn");
     if (storedIsLoggedIn === "true") {
       navigate("/");
-      toast.success("Welcome back")
-
     }
   }, []);
 

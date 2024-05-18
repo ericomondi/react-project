@@ -9,6 +9,8 @@ interface Product {
   id: number;
   name: string;
   price: number;
+  img_url: string;
+  stock_quantity: number;
 }
 
 const Products: React.FC = () => {
@@ -25,8 +27,15 @@ const Products: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
+      const token = localStorage.getItem("token")
       const response = await axios.get<Product[]>(
-        "http://127.0.0.1:5000/products"
+        "http://127.0.0.1:8000/products",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       setOriginalArray(response.data);
@@ -56,6 +65,11 @@ const Products: React.FC = () => {
       selector: (row: { price: number }) => row.price,
       sortable: true,
     },
+    {
+      name: "Stock Quantity",
+      selector: (row: { stock_quantity: number }) => row.stock_quantity,
+      sortable: true,
+    }
   ];
 
   return (

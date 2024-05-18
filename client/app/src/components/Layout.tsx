@@ -12,6 +12,7 @@ function Layout() {
       <Navbar />
       <main>
         <ToastContainer/>
+        
         <Outlet/>
       </main>
       <Footer />

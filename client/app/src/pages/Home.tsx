@@ -1,4 +1,6 @@
 import React from "react";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const HomeComponent: React.FC = () => {
   return (

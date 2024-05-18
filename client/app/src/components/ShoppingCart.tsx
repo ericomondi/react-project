@@ -17,14 +17,31 @@ interface Product {
   price: number;
 }
 
+interface CartItem {
+  id : number;
+  quantity : number;
+}
+
+interface CartItems {
+  cartItems: CartItem[];
+}
+
+
 export function ShoppingCart({ isOpen }: ShoppingCartProps) {
-  const { closeCart,  cartItems, clearCart, } = useShoppingCart();
+  const { closeCart, cartItems, clearCart } = useShoppingCart();
   const [array, setArray] = useState<Product[]>([]);
 
   const fetchProducts = async () => {
     try {
+      const token = localStorage.getItem("token")
       const response = await axios.get<Product[]>(
-        "http://127.0.0.1:5000/products"
+        "http://127.0.0.1:8000/products",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       setArray(response.data);
@@ -40,20 +57,26 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
   const clearCartAndSubmit = async () => {
     // Submit cart to the database
     try {
-      const response = await axios.post("http://127.0.0.1:5000/create_order", {
+      const token = localStorage.getItem("token")
+      const response = await axios.post("http://127.0.0.1:8000/create_order", {
         cartItems,
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        }
       });
       localStorage.removeItem("shopping-cart");
-      clearCart()
-      closeCart()
+      clearCart();
+      closeCart();
       console.log("Cart submitted successfully:", response.data);
-      toast.success("Order inserted successfully")
+      toast.success("Order inserted successfully");
     } catch (error) {
-      toast.error("An error occured")
+      toast.error("An error occured");
       console.error("Error submitting cart:", error);
     }
   };
-
+  
 
   return (
     <Offcanvas show={isOpen} onHide={closeCart} placement="end">
@@ -74,7 +97,9 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
               }, 0)
             )}
           </div>
-          <button className="btn btn-primary" onClick={clearCartAndSubmit}>Check Out</button>
+          <button className="btn btn-primary" onClick={clearCartAndSubmit}>
+            Check Out
+          </button>
         </Stack>
       </Offcanvas.Body>
     </Offcanvas>

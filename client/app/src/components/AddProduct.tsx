@@ -7,6 +7,8 @@ interface FormType {
   name: string;
   cost: number;
   price: number;
+  stockQuantity: number;
+  img_url: string;
 }
 
 interface ResponseMes {
@@ -14,9 +16,11 @@ interface ResponseMes {
 }
 
 const AddProduct: React.FC = () => {
-  const [name, setName] = useState<string>(""); // Specify type for name
-  const [cost, setCost] = useState<number>(); // Specify type for cost
-  const [price, setPrice] = useState<number>(); // Specify type for price
+  const [name, setName] = useState<string>("");
+  const [cost, setCost] = useState<number>();
+  const [price, setPrice] = useState<number>();
+  const [stockQuantity, setStockQuantity] = useState<number>();
+  const [imgUrl, setImgUrl] = useState<string>("");
 
   const handleProductSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,15 +28,20 @@ const AddProduct: React.FC = () => {
       name: name,
       cost: cost,
       price: price,
+      stock_quantity: stockQuantity,
+      img_url: imgUrl,
     };
     try {
-      const apiUrl = "http://127.0.0.1:5000/products";
+      const token = localStorage.getItem("token");
+      const apiUrl = "http://127.0.0.1:8000/products";
       const response = await axios.post<ResponseMes>(apiUrl, formContent, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
       toast.success("Product added successfully!");
+      
       console.log("Done.", response.data);
     } catch (error) {
       toast.error("An error occurred while adding the product.");
@@ -76,6 +85,28 @@ const AddProduct: React.FC = () => {
               placeholder="Enter product price"
               value={price}
               onChange={(e) => setPrice(e.target.valueAsNumber)} // Use valueAsNumber for number inputs
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="productPrice">Stock Quantity</label>
+            <input
+              type="number"
+              className="form-control"
+              id="stockQuantity"
+              placeholder="Enter the stock quantity"
+              value={stockQuantity}
+              onChange={(e) => setStockQuantity(e.target.valueAsNumber)} // Use valueAsNumber for number inputs
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="productPrice">Picture URL</label>
+            <input
+              type="text"
+              className="form-control"
+              id="pictureUrl"
+              placeholder="Enter product link"
+              value={imgUrl}
+              onChange={(e) => setImgUrl(e.target.value)} // Use valueAsNumber for number inputs
             />
           </div>
           <button type="submit" className="btn btn-primary">
